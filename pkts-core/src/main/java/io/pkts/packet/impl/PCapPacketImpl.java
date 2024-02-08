@@ -98,9 +98,6 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
 
     @Override
     public void write(final OutputStream out, final Buffer payload) throws IOException {
-        final int size = payload.getReadableBytes();
-        this.pcapHeader.setCapturedLength(size);
-        this.pcapHeader.setTotalLength(size);
         this.pcapHeader.write(out);
         out.write(payload.getArray());
     }
