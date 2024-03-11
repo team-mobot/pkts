@@ -15,6 +15,7 @@ import io.pkts.packet.PacketParseException;
 import io.pkts.packet.Packet;
 import io.pkts.protocol.Protocol;
 
+import java.nio.ByteOrder;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -98,7 +99,16 @@ public final class PCapPacketImpl extends AbstractPacket implements PCapPacket {
 
     @Override
     public void write(final OutputStream out, final Buffer payload) throws IOException {
-        this.pcapHeader.write(out);
+        PcapRecordHeader header = this.pcapHeader;
+        if (this.pcapGlobalHeader.getByteOrder()==ByteOrder.BIG_ENDIAN) {
+            header = PcapRecordHeader.createDefaultHeader(0);
+            header.setTimeStampSeconds(this.pcapHeader.getTimeStampSeconds());
+            header.setTimeStampMicroOrNanoSeconds(this.pcapHeader.getTimeStampMicroOrNanoSeconds());
+        }
+        final int size = payload.getReadableBytes();
+        header.setCapturedLength(size);
+        header.setTotalLength(size);
+        header.write(out);
         out.write(payload.getArray());
     }
 
