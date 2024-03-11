@@ -5,7 +5,7 @@
   <groupId>team-mobot</groupId>
   <artifactId>pkts-core</artifactId>
   <packaging>jar</packaging>
-  <version>3.0.12-SNAPSHOT</version>
+  <version>3.0.11-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>1.10</maven.compiler.source>
